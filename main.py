@@ -13,9 +13,9 @@ while opcion != 3:
     print("3. Salir")
     print("\n==========================")
     
-    opcion= int(input("Seleccione una opcion: "))
+    opcion= input("Seleccione una opcion: ")
     
-    if opcion == 1:
+    if opcion == "1":
         email= input("Ingrese su email: ")
         contrasena= input("Ingrese su contraseña: ")
         
@@ -27,7 +27,7 @@ while opcion != 3:
         else:
             print("Email o contraseña incorrectos")
             
-    elif opcion == 2:
+    elif opcion == "2":
         documento= input("Ingrese su documento: ")
         nombre= input("Ingrese su nombre: ")
         email= input("Ingrese su email: ")
@@ -46,7 +46,7 @@ while opcion != 3:
         else:
             print("Las contraseñas no coinciden")
         
-    elif opcion == 3:
+    elif opcion == "3":
         print("Gracias por usar Vision Madera")
     else:
         print("Opcion inválida")
