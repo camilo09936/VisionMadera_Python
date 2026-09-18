@@ -1,0 +1,31 @@
+class Cita:
+
+    def __init__(self, usuario, sede, disenador, fecha):
+        self._usuario = usuario
+        self._sede = sede
+        self._disenador = disenador
+        self._fecha = fecha
+
+    @property
+    def usuario(self):
+        return self._usuario
+
+    @property
+    def sede(self):
+        return self._sede
+
+    @property
+    def disenador(self):
+        return self._disenador
+
+    @property
+    def fecha(self):
+        return self._fecha
+
+    def mostrarInformacion(self):
+        print("\n===== INFORMACIÓN DE LA CITA =====")
+        print(f"Usuario: {self._usuario.nombre}")
+        print(f"Sede: {self._sede.nombre}")
+        print(f"Dirección: {self._sede.direccion}")
+        print(f"Diseñador: {self._disenador.nombre}")
+        print(f"Fecha: {self._fecha}")
