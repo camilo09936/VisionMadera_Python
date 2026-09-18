@@ -191,3 +191,13 @@ class Sistema:
             cita.fecha = fecha
 
         return True
+
+    def cancelarCita(self, usuario, numeroCita):
+        citasUsuario = self.obtenerMisCitas(usuario)
+
+        if numeroCita < 1 or numeroCita > len(citasUsuario):
+            return False
+
+        cita = citasUsuario[numeroCita - 1]
+        self._citas.remove(cita)
+        return True

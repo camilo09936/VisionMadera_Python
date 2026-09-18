@@ -30,7 +30,7 @@ while opcion != "3":
 
             opcionUsuario = "0"
 
-            while opcionUsuario != "4":
+            while opcionUsuario != "5":
 
                 print("\n==========================")
                 print("      MENÚ DEL USUARIO")
@@ -38,7 +38,8 @@ while opcion != "3":
                 print("1. Agendar Cita")
                 print("2. Ver mis citas")
                 print("3. Editar cita")
-                print("4. Cerrar Sesión")
+                print("4. Cancelar cita")
+                print("5. Cerrar Sesión")
                 print("==========================")
 
                 opcionUsuario = input("Seleccione una opcion: ")
@@ -168,6 +169,38 @@ while opcion != "3":
                         print("\nNo fue posible modificar la cita.")
 
                 elif opcionUsuario == "4":
+
+                    citasUsuario = sistema.obtenerMisCitas(usuario)
+
+                    if len(citasUsuario) == 0:
+                        print("\nNo tienes citas agendadas.")
+                        continue
+
+                    print("\n===== CANCELAR CITA =====")
+                    for numeroCita, cita in enumerate(citasUsuario, start=1):
+                        print(
+                            f"{numeroCita}. {cita.sede.nombre} - "
+                            f"{cita.disenador.nombre} - {cita.fecha}"
+                        )
+
+                    numeroCita = input("Seleccione la cita que desea cancelar: ")
+
+                    if not numeroCita.isdigit():
+                        print("\nLa cita seleccionada no es válida.")
+                        continue
+
+                    numeroCita = int(numeroCita)
+
+                    if numeroCita < 1 or numeroCita > len(citasUsuario):
+                        print("\nLa cita seleccionada no es válida.")
+                        continue
+
+                    if sistema.cancelarCita(usuario, numeroCita):
+                        print("\n¡Cita cancelada correctamente!")
+                    else:
+                        print("\nNo fue posible cancelar la cita.")
+
+                elif opcionUsuario == "5":
 
                     print("\nSesión cerrada.")
 
