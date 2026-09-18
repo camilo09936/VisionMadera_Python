@@ -3,9 +3,9 @@ from usuario import Usuario
 
 sistema = Sistema()
 
-opcion = 0
+opcion = "0"
 
-while opcion != 3:
+while opcion != "3":
     print("\n==========================")
     print("     VISION MADERA")
     print("\n==========================")
@@ -111,7 +111,7 @@ while opcion != 3:
         email = input("Ingrese su email: ")
         contrasena = input("Ingrese su contraseña: ")
         confirmarContrasena = input("Confirme su contraseña: ")
-        fechaNacimiento = input("Ingrese su fecha de nacimiento: ")
+        fechaNacimiento = input("Ingrese su fecha de nacimiento (AAAA-MM-DD): ")
         direccion = input("Ingrese su dirección: ")
         telefono = input("Ingrese su telefono/ celular: ")
 
