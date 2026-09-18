@@ -21,6 +21,10 @@ class Cita:
     @property
     def fecha(self):
         return self._fecha
+    
+    @fecha.setter
+    def fecha(self, valor):
+        self._fecha = valor
 
     def mostrarInformacion(self):
         print("\n===== INFORMACIÓN DE LA CITA =====")

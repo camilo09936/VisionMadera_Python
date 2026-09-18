@@ -138,7 +138,7 @@ class Sistema:
         return None
         
     def buscarDisenador(self, sede, idDisenador):
-        for disenador in sede._disenadores:
+        for disenador in sede.disenadores:
             if str(disenador.idDisenador) == str(idDisenador):
                 return disenador
         return None
