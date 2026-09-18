@@ -14,43 +14,43 @@ class Sistema:
         sede1 = Sede(
             1,
             "Madecentro Medellín",
-            "Dirección sede Medellín"
+            "Cra. 58 #62 74, La Candelaria, Medellín, La Candelaria, Medellín, Antioquia"
         )
 
         sede2 = Sede(
             2,
             "Madecentro Envigado",
-            "Dirección sede Envigado"
+            "Cl. 38 Sur #39-45, Zona 9, Envigado, Antioquia"
         )
 
         sede3 = Sede(
             3,
             "Madecentro Bello",
-            "Dirección sede Bello"
+            "Cra. 50a #53 62, Andalucia, Bello, Antioquia"
         )
 
         disenador1 = Disenador(
             1,
-            "Carlos Gómez",
-            "carlos@visionmadera.com"
+            "Camilo perez",
+            "camilo@visionmadera.com"
         )
 
         disenador2 = Disenador(
             2,
-            "María Rodríguez",
-            "maria@visionmadera.com"
+            "Brayan Alvarez",
+            "Bray@visionmadera.com"
         )
 
         disenador3 = Disenador(
             3,
-            "Andrés López",
+            "Andrés Garcia",
             "andres@visionmadera.com"
         )
 
         disenador4 = Disenador(
             4,
-            "Laura Martínez",
-            "laura@visionmadera.com"
+            "Juan Morales",
+            "Juan@visionmadera.com"
         )
 
         sede1.agregarDisenador(disenador1)
@@ -130,3 +130,32 @@ class Sistema:
         )
         self._citas.append(cita)
         return cita
+    
+    def buscarSede(self, idSede):
+        for sede in self._sedes:
+            if str(sede.idSede) == str(idSede):
+                return sede
+        return None
+        
+    def buscarDisenador(self, sede, idDisenador):
+        for disenador in sede._disenadores:
+            if str(disenador.idDisenador) == str(idDisenador):
+                return disenador
+        return None
+    
+    def mostrarMisCitas(self, usuario):
+        tieneCitas = False
+        print("\n==========================")
+        print("       MIS CITAS")
+        print("==========================")
+
+        for cita in self._citas:
+
+            if cita.usuario == usuario:
+
+                cita.mostrarInformacion()
+                tieneCitas = True
+
+        if tieneCitas == False:
+
+            print("\nNo tienes citas agendadas.")

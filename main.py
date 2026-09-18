@@ -92,7 +92,7 @@ while opcion != 3:
 
                 elif opcionUsuario == "2":
 
-                    print("\nEsta opción estará disponible próximamente.")
+                    sistema.mostrarMisCitas(usuario)
 
                 elif opcionUsuario == "3":
 
