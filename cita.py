@@ -14,9 +14,17 @@ class Cita:
     def sede(self):
         return self._sede
 
+    @sede.setter
+    def sede(self, valor):
+        self._sede = valor
+
     @property
     def disenador(self):
         return self._disenador
+
+    @disenador.setter
+    def disenador(self, valor):
+        self._disenador = valor
 
     @property
     def fecha(self):

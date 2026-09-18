@@ -159,3 +159,35 @@ class Sistema:
         if tieneCitas == False:
 
             print("\nNo tienes citas agendadas.")
+
+    def obtenerMisCitas(self, usuario):
+        return [cita for cita in self._citas if cita.usuario == usuario]
+
+    def modificarMisCitas(
+        self,
+        usuario,
+        numeroCita,
+        sede=None,
+        disenador=None,
+        fecha=None
+    ):
+        citasUsuario = self.obtenerMisCitas(usuario)
+
+        if numeroCita < 1 or numeroCita > len(citasUsuario):
+            return False
+
+        cita = citasUsuario[numeroCita - 1]
+        nuevaSede = sede if sede is not None else cita.sede
+        nuevoDisenador = (
+            disenador if disenador is not None else cita.disenador
+        )
+
+        if nuevoDisenador not in nuevaSede.disenadores:
+            return False
+
+        cita.sede = nuevaSede
+        cita.disenador = nuevoDisenador
+        if fecha is not None:
+            cita.fecha = fecha
+
+        return True

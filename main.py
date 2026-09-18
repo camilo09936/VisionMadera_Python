@@ -30,14 +30,15 @@ while opcion != "3":
 
             opcionUsuario = "0"
 
-            while opcionUsuario != "3":
+            while opcionUsuario != "4":
 
                 print("\n==========================")
                 print("      MENÚ DEL USUARIO")
                 print("==========================")
                 print("1. Agendar Cita")
                 print("2. Ver mis citas")
-                print("3. Cerrar Sesión")
+                print("3. Editar cita")
+                print("4. Cerrar Sesión")
                 print("==========================")
 
                 opcionUsuario = input("Seleccione una opcion: ")
@@ -95,6 +96,78 @@ while opcion != "3":
                     sistema.mostrarMisCitas(usuario)
 
                 elif opcionUsuario == "3":
+
+                    citasUsuario = sistema.obtenerMisCitas(usuario)
+
+                    if len(citasUsuario) == 0:
+                        print("\nNo tienes citas agendadas.")
+                        continue
+
+                    print("\n===== EDITAR CITA =====")
+                    for numeroCita, cita in enumerate(citasUsuario, start=1):
+                        print(
+                            f"{numeroCita}. {cita.sede.nombre} - "
+                            f"{cita.disenador.nombre} - {cita.fecha}"
+                        )
+
+                    numeroCita = input("Seleccione la cita que desea editar: ")
+
+                    if not numeroCita.isdigit():
+                        print("\nLa cita seleccionada no es válida.")
+                        continue
+
+                    numeroCita = int(numeroCita)
+
+                    if numeroCita < 1 or numeroCita > len(citasUsuario):
+                        print("\nLa cita seleccionada no es válida.")
+                        continue
+
+                    cita = citasUsuario[numeroCita - 1]
+                    print("\nDeje un campo vacío para conservar su valor actual.")
+
+                    idSede = input(
+                        f"Sede [{cita.sede.nombre}]: "
+                    )
+                    sede = (
+                        sistema.buscarSede(idSede)
+                        if idSede != ""
+                        else cita.sede
+                    )
+
+                    if sede is None:
+                        print("\nLa sede seleccionada no existe.")
+                        continue
+
+                    sistema.mostrarDisenadores(sede)
+                    idDisenador = input(
+                        f"Diseñador [{cita.disenador.nombre}]: "
+                    )
+                    disenador = (
+                        sistema.buscarDisenador(sede, idDisenador)
+                        if idDisenador != ""
+                        else cita.disenador
+                    )
+
+                    if disenador is None:
+                        print("\nEl diseñador seleccionado no existe.")
+                        continue
+
+                    fecha = input(f"Fecha [{cita.fecha}]: ")
+                    fecha = fecha if fecha != "" else cita.fecha
+
+                    if sistema.modificarMisCitas(
+                        usuario,
+                        numeroCita,
+                        sede,
+                        disenador,
+                        fecha
+                    ):
+                        print("\n¡Cita modificada correctamente!")
+                        citasUsuario[numeroCita - 1].mostrarInformacion()
+                    else:
+                        print("\nNo fue posible modificar la cita.")
+
+                elif opcionUsuario == "4":
 
                     print("\nSesión cerrada.")
 
