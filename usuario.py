@@ -33,6 +33,9 @@ class Usuario:
     @email.setter
     def email(self, valor):
         self._email = valor
+    def emailValido(self):
+        return "@" in self._email and "." in self._email
+    #Valida si el correo cuenta con los caracteres básicos (@ y .)
         
     @property
     def fechaNacimiento(self):

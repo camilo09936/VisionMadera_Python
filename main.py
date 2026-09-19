@@ -6,6 +6,22 @@ from usuario import Usuario
 sistema = Sistema()
 opcion = "0"
 
+def fechaValida(fechaTexto):
+    partes= fechaTexto.split("-")
+    if len(partes)!=3:
+        return False
+    anio, mes, dia= partes
+    if not (anio.isdigit() and mes.isdigit() and dia.isdigit()):
+        return False
+    if len(anio)!=4 or len(mes)!=2 or len(dia) != 2:
+        return False
+    if int(mes) <1 or int(mes) > 12:
+        return False
+    if int(dia) <1 or int(dia) > 31:
+        return False
+    return True
+#Valida si el string de fecha ingresado cumple con AAAA-MM-DD y sus valores son coherentes
+
 while opcion != "3":
 #Bucle principal de la aplicacion: Menu de bienvenida con opciones para inicio de aplicacion , registro y salida del sistema.
     print("\n==========================")
@@ -59,18 +75,30 @@ while opcion != "3":
                             idDisenador
                         )
                         if disenador != None:
-                            fecha = input(
-                                "\nIngrese la fecha de la cita (AAAA-MM-DD): "
+                            fecha = input("\nIngrese la fecha de la cita (AAAA-MM-DD): ")
+                            while not fechaValida(fecha):
+                                print("La fecha debe tener el formato AAAA-MM-DD (Ejemplo: 2005-03-21)")
+                                fecha= input("\nIngrese la fecha de la cita (AAAA-MM-DD): ")
+                            sistema.mostrarBloquesHorarios()
+                            idBloque= input(
+                                "\nSeleccione el horario: "
                             )
-                            cita = sistema.agendarCita(
-                                usuario,
-                                sede,
-                                disenador,
-                                fecha
-                            )
-                            print("\n¡Cita agendada correctamente!")
-
-                            cita.mostrarInformacion()
+                            bloqueHorario= sistema.buscarBloqueHorario(idBloque)
+                            if bloqueHorario != None:
+                                cita = sistema.agendarCita(
+                                    usuario,
+                                    sede,
+                                    disenador,
+                                    fecha,
+                                    bloqueHorario
+                                )
+                                if cita != None:
+                                    print("\nCita agendada correctamente!")
+                                    cita.mostrarInformacion()
+                                else:
+                                    print("\nEse diseñador ya tiene una cita asignada en ese horario.")
+                            else:
+                                print("\nEl horario seleccionado no existe.")
                         else:
                             print("\nEl diseñador seleccionado no existe.")
                             
@@ -101,6 +129,7 @@ while opcion != "3":
                         continue
                     cita = citasUsuario[numeroCita - 1]
                     print("\nDeje un campo vacío para conservar su valor actual.")
+                    sistema.mostrarSedes()
                     idSede = input(
                         f"Sede [{cita.sede.nombre}]: "
                     )
@@ -124,14 +153,31 @@ while opcion != "3":
                     if disenador is None:
                         print("\nEl diseñador seleccionado no existe.")
                         continue
-                    fecha = input(f"Fecha [{cita.fecha}]: ")
+                    fecha = input(f"Fecha (AAAA-MM-DD) [{cita.fecha}]: ")
+                    while fecha != "" and not fechaValida(fecha):
+                        print("La fecha debe tener el formato AAAA-MM-DD (Ejemplo: 2005-03-21)")
+                        fecha= input(f"Fecha (AAAA-MM-DD) [{cita.fecha}]: ")
                     fecha = fecha if fecha != "" else cita.fecha
+                    sistema.mostrarBloquesHorarios()
+                    idBloque= input(
+                        f"Horario [{cita.bloqueHorario.horaInicio} - "
+                        f"{cita.bloqueHorario.horaFin}]: "
+                    )
+                    bloqueHorario= (
+                        sistema.buscarBloqueHorario(idBloque)
+                        if idBloque != ""
+                        else cita.bloqueHorario
+                    )
+                    if bloqueHorario is None:
+                        print("\nEl horario seleccionado no esxiste.")
+                        continue
                     if sistema.modificarMisCitas(
                         usuario,
                         numeroCita,
                         sede,
                         disenador,
-                        fecha
+                        fecha,
+                        bloqueHorario
                     ):
                         print("\n¡Cita modificada correctamente!")
                         citasUsuario[numeroCita - 1].mostrarInformacion()
@@ -175,9 +221,19 @@ while opcion != "3":
         documento = input("Ingrese su documento: ")
         nombre = input("Ingrese su nombre: ")
         email = input("Ingrese su email: ")
+        while "@" not in email or "." not in email:
+            print("El correo debe contener @ y un dominio (Ejemplo: nombre@dominio.com)")
+            email= input("Ingrese su email: ")
         contrasena = input("Ingrese su contraseña: ")
         confirmarContrasena = input("Confirme su contraseña: ")
+        while contrasena != confirmarContrasena:
+            print("Las contraseñas no coinciden. Intente de nuevo.")
+            contrasena = input("Ingrese su contraseña: ")
+            confirmarContrasena = input("Confirme su contraseña: ")
         fechaNacimiento = input("Ingrese su fecha de nacimiento (AAAA-MM-DD): ")
+        while not fechaValida(fechaNacimiento):
+            print("La fecha debe tener el formato AAAA-MM-DD (Ejemplo: 2005-03-21)")
+            fechaNacimiento= input("Ingrese su fecha de nacimiento (AAAA-MM-DD): ")
         direccion = input("Ingrese su dirección: ")
         telefono = input("Ingrese su telefono/ celular: ")
         if contrasena == confirmarContrasena:
@@ -194,8 +250,7 @@ while opcion != "3":
                 print("Usuario registrado correctamente!")
             else:
                 print("El documento o email ya se encuentran registrados")
-        else:
-            print("Las contraseñas no coinciden")
+                
     elif opcion == "3":
         print("Gracias por usar Vision Madera")
     else:

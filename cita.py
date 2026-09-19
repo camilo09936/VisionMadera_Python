@@ -1,10 +1,11 @@
 class Cita:
     #Representa un cita agendada entre un usuario y un diseñador
-    def __init__(self, usuario, sede, disenador, fecha):
+    def __init__(self, usuario, sede, disenador, fecha, bloqueHorario):
         self._usuario = usuario
         self._sede = sede
         self._disenador = disenador
         self._fecha = fecha
+        self._bloqueHorario = bloqueHorario
     #Instancia de la clase cita 
 
     @property
@@ -38,6 +39,15 @@ class Cita:
     @fecha.setter
     def fecha(self, valor):
         self._fecha = valor
+        
+    @property
+    def bloqueHorario(self):
+        return self._bloqueHorario
+    #Obtiene o establece el bloque horario de la cita
+    
+    @bloqueHorario.setter
+    def bloqueHorario(self, valor):
+        self._bloqueHorario = valor
 
     def mostrarInformacion(self):
         print("\n===== INFORMACIÓN DE LA CITA =====")
@@ -46,4 +56,8 @@ class Cita:
         print(f"Dirección: {self._sede.direccion}")
         print(f"Diseñador: {self._disenador.nombre}")
         print(f"Fecha: {self._fecha}")
+        print(
+            f"Horario: {self._bloqueHorario.horaInicio} - "
+            f"{self._bloqueHorario.horaFin}"
+        )
     #Imprime por consola los detalles principales de la cita

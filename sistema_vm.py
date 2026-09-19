@@ -1,14 +1,17 @@
 from sede import Sede
 from disenador import Disenador
 from cita import Cita
+from bloque_horario import BloqueHorario
 
 class Sistema:
-#Gestiona la logica de la aplicacion del sistema de citas incluyento usuarios, sedes, diseñadores y agendamientos.
+#Gestiona la logica de la aplicacion del sistema de citas incluyento usuarios, sedes, diseñadores, bloques de horario y agendamientos.
     def __init__(self):
         self._usuarios=[]
         self._sedes = []
         self._citas = []
+        self._bloquesHorarios= []
         self.crearDatosIniciales()
+        self.crearBloquesHorarios()
     #Inicializa una instancia del sistema e invoca la precarga de los datos iniciales
     
     def crearDatosIniciales(self):
@@ -129,16 +132,24 @@ class Sistema:
             )
     #Imprime por consola la lista de diseñadores disponibles asociados a una sede en particular
 
-    def agendarCita(self, usuario, sede, disenador, fecha):
+    def agendarCita(self, usuario, sede, disenador, fecha, bloqueHorario):
+        for cita in self._citas:
+            if (
+                cita.disenador== disenador
+                and cita.fecha== fecha
+                and cita.bloqueHorario== bloqueHorario
+            ):
+                return None
         cita = Cita(
             usuario,
             sede,
             disenador,
-            fecha
+            fecha,
+            bloqueHorario
         )
         self._citas.append(cita)
         return cita
-    #Crea un agendamiento de cita y lo guarda en el sistema
+    #Crea un agendamiento de cita y lo guarda en el sistema tras verificar disponibilidad.
     
     def buscarSede(self, idSede):
         for sede in self._sedes:
@@ -177,7 +188,8 @@ class Sistema:
         numeroCita,
         sede=None,
         disenador=None,
-        fecha=None
+        fecha=None,
+        bloqueHorario=None
     ):
         citasUsuario = self.obtenerMisCitas(usuario)
         if numeroCita < 1 or numeroCita > len(citasUsuario):
@@ -187,14 +199,26 @@ class Sistema:
         nuevoDisenador = (
             disenador if disenador is not None else cita.disenador
         )
+        nuevaFecha= fecha if fecha is not None else cita.fecha
+        nuevoBloqueHorario= (
+            bloqueHorario if bloqueHorario is not None else cita.bloqueHorario
+        )
         if nuevoDisenador not in nuevaSede.disenadores:
             return False
+        for otraCita in self._citas:
+            if (
+                otraCita != cita
+                and otraCita.disenador== nuevoDisenador
+                and otraCita.fecha== nuevaFecha
+                and otraCita.bloqueHorario== nuevoBloqueHorario
+            ):
+                return False
         cita.sede = nuevaSede
         cita.disenador = nuevoDisenador
-        if fecha is not None:
-            cita.fecha = fecha
+        cita.fecha = nuevaFecha
+        cita.bloqueHorario= nuevoBloqueHorario
         return True
-    #Modifica los datos de una cita existente para un usuario
+    #Modifica los datos de una cita existente para un usuario validado que no existan horarios duplicados
     
     def cancelarCita(self, usuario, numeroCita):
         citasUsuario = self.obtenerMisCitas(usuario)
@@ -204,3 +228,32 @@ class Sistema:
         self._citas.remove(cita)
         return True
     #Cancela y remueve una cita del sistema
+    
+    def crearBloquesHorarios(self):
+        bloque1= BloqueHorario(1, "08:00", "10:00")
+        bloque2= BloqueHorario(2, "10:00", "12:00")
+        bloque3= BloqueHorario(3, "12:00", "14:00")
+        bloque4= BloqueHorario(4, "14:00", "16:00")
+        bloque5= BloqueHorario(5, "16:00", "18:00")
+        bloque6= BloqueHorario(6, "18:00", "20:00")
+        
+        self._bloquesHorarios.append(bloque1)
+        self._bloquesHorarios.append(bloque2)
+        self._bloquesHorarios.append(bloque3)
+        self._bloquesHorarios.append(bloque4)
+        self._bloquesHorarios.append(bloque5)
+        self._bloquesHorarios.append(bloque6)
+    #Instancia y almacena los bloques horarios en la lista de bloqueshorarios
+        
+    def mostrarBloquesHorarios(self):
+        print("\n===== HORARIOS DISPONIBLES =====")
+        for bloque in self._bloquesHorarios:
+            bloque.mostrarInformacion()
+    #Imprime por consola la lista de los bloques horarios disponibles
+            
+    def buscarBloqueHorario(self, idBloque):
+        for bloque in self._bloquesHorarios:
+            if str(bloque.idBloque) == str(idBloque):
+                return bloque
+        return None
+    #Busca una elemento de la lista bloqueshorarios por su id
