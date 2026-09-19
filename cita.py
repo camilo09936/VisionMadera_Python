@@ -1,18 +1,21 @@
 class Cita:
-
+    #Representa un cita agendada entre un usuario y un diseñador
     def __init__(self, usuario, sede, disenador, fecha):
         self._usuario = usuario
         self._sede = sede
         self._disenador = disenador
         self._fecha = fecha
+    #Instancia de la clase cita 
 
     @property
     def usuario(self):
         return self._usuario
+    #Obtiene el usuario asociado a la cita
 
     @property
     def sede(self):
         return self._sede
+    #Obtiene o establece la sede de la cita
 
     @sede.setter
     def sede(self, valor):
@@ -21,6 +24,7 @@ class Cita:
     @property
     def disenador(self):
         return self._disenador
+    #Obtiene o establece el diseñador asignado a la cita
 
     @disenador.setter
     def disenador(self, valor):
@@ -29,6 +33,7 @@ class Cita:
     @property
     def fecha(self):
         return self._fecha
+    #Obtiene o establece la fecha de la cita
     
     @fecha.setter
     def fecha(self, valor):
@@ -41,3 +46,4 @@ class Cita:
         print(f"Dirección: {self._sede.direccion}")
         print(f"Diseñador: {self._disenador.nombre}")
         print(f"Fecha: {self._fecha}")
+    #Imprime por consola los detalles principales de la cita
